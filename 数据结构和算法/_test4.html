@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>链表封装 =>单向链表</title>
+</head>
+<body>
+    <script>
+        /*
+            链表和数组对比
+            数组:
+                要存储多个元素，数组（或列表）可能是最常用的数据结构
+                我们之前说过, 几乎每一种编程语言都有默认实现数组结构, 这种数据结构非常方便，提供了一个便利的[]语法来访问它的元素。
+                但是数组也有很多缺点:
+                数组的创建通常需要申请一段连续的内存空间(一整块的内存), 并且大小是固定的(大多数编程语言数组都是固定的), 所以当当前数组不能满足容量需求时, 需要扩容. (一般情况下是申请一个更大的数组, 比如2倍. 然后将原数组中的元素复制过去)。
+                而且在数组开头或中间位置插入数据的成本很高, 需要进行大量元素的位移.（尽管我们已经学过的JavaScript的Array类方法可以帮我们做这些事，但背后的原理依然是这样）。
+            链表:
+                要存储多个元素, 另外一个选择就是使用链表.
+                但不同于数组, 链表中的元素在内存中不必是连续的空间.
+                链表的每个元素由一个存储元素本身的节点和一个指向下一个元素的引用(有些语言称为指针或者链接)组成.
+            相对于数组, 链表有一些优点:
+                内存空间不是比是连续的. 可以充分利用计算机的内存. 实现灵活的内存动态管理.
+                链表不必在创建时就确定大小, 并且大小可以无限的延伸下去.
+                链表在插入和删除数据时, 时间复杂度可以达到O(1). 相对数组效率高很多.
+            相对于数组, 链表有一些缺点:
+                链表访问任何一个位置的元素时, 都需要从头开始访问.(无法跳过第一个元素访问任何一个元素).
+                无法通过下标直接访问元素, 需要从头一个个访问, 直到找到对应的问题
+        */
+
+        //创建链表类
+        function linkedList(){
+            //创建一个内部类，用来实例化元素节点
+            function Node(data){
+                //传入的数据
+                this.data=data;
+                //指向下一个元素的指针，默认为null;
+                this.next=null;
+                //定义链表长度
+                this.length=0;
+            }
+
+            //链表必须有一个head,head指向第一个元素，如果链表为空，则head为null;
+            this.head=null;
+            
+            //追加方法
+            linkedList.prototype.append=function(data){
+                //创建元素
+                var newNode = new Node(data);
+                //做判断，如果head为空，则是第一个元素，直接追加(改变heae指向)
+                if(this.head===null){
+                    //将head指向第一个
+                    this.head=newNode;
+                } else{
+                    //进到这里表示不是第一个，则需要进行循环，找到最后一个，并把指针指向新节点
+                    var cuerrent=this.head;
+                    //定义变量, 保存当前找到的节点
+                    //判断条件为下一个是不是空，为空则是最后一个
+                    while(cuerrent.next){
+                        //cuerrent.next是指向下一个的，将当前指向下一个，促进循环
+                        cuerrent=cuerrent.next;
+                    }
+                    // 找到最后一项, 将其next赋值为newNode
+                    cuerrent.next = newNode;
+                    // 链表长度增加1
+                    this.length++;
+                }
+            }
+
+            //toString 方法，方便测试打印
+            linkedList.prototype.toString=function(){
+                var cuerrent=this.head;
+                //创建返回字符串
+                var resultString='';
+                //循环
+                //判断条件为元素是否存在
+                while(cuerrent){
+                    //拼接字符串
+                    resultString += cuerrent.data + ' '
+                    //指向下一个
+                    //console.log(cuerrent)
+                    cuerrent=cuerrent.next;
+                }
+                //返回结果
+                return resultString;
+            }
+
+            //插入方法 传入两个参数 分别是位置 和 data
+            linkedList.prototype.insert=function(po,data){ //这个逻辑需要反复练习
+                //1判断边界 必须大于零  不能为负数 
+                //console.log(po)
+                if (po < 0 || po > this.length) return false;//插入失败
+                //2.找到正确的位置, 并且插入数据
+                var newNode = new Node(data);
+                var current = this.head
+                var previous = null
+                index = 0
+                // 3.判断是否列表是否在第一个位置插入
+                if (po == 0) {
+                    //如果是第一个，则是将元素放到第一个位置，需要把原来的head指向newNode；newNode的next指向下一个(也就是原来的第一个)
+                    newNode.next = current//这时候的current为原来的第一个
+                    this.head = newNode//改变head指向，指向新node
+                } else {
+                    //进到这里代表不是第一个  需要保存前一个，和找到插入位置，current最后为找到的位置，
+                    while (index++ < po) {
+                        //previous等于current，保存前一个
+                        previous = current
+                        //最后为找到的位置
+                        current = current.next
+                    }
+                    //将新的指向它的下一个
+                    newNode.next = current
+                    //它的前一个指向它，完成
+                    previous.next = newNode
+                }
+                
+                // 4.length+1
+                this.length++
+                return true//插入成功
+            }
+        }
+
+        var s5=new linkedList();
+        s5.append("123")
+        s5.append("456")
+        s5.append("789")
+        s5.insert(0, 100)
+        s5.insert(4, 2)
+        s5.insert(2, 0)
+        console.log(s5.toString(),1414124)
+    </script>
+</body>
+</html>
