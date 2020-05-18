@@ -1,0 +1,9 @@
+https://github.com/qq281113270/vue    ---vue 源码
+
+https://github.com/haizlin/fe-interview ---- 面试驱动学习
+
+http://caibaojian.com/c/front    ----前端日报
+
+https://xv700.gitee.io/message-communication-for-web/#introduce  ---多页面通信
+
+https://www.jianshu.com/u/02cd0bc8c45e   简书学习路径

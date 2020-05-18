@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>栈结构</title>
+	</head>
+	<body>
+		<script>
+			//栈结构=》有限制的线性结构 只能在栈顶进和出 先进后出 后进先出
+			/*
+			    栈存储数据的方式跟数组一样，都是将元素排成一行。只不过它还有以下3条约束。
+			    •只能在末尾插入数据。
+			    •只能读取末尾的数据。
+			    •只能移除末尾的数据。
+
+			    绝大部分计算机科学家都把栈的末尾称为栈顶，把栈的开头称为栈底。
+			    往栈里插入数据，也叫作压栈。
+			    从栈顶移除数据叫作出栈。
+			    压栈和出栈可被形容为LIFO（last in，first out）后进先出。解释起来就是最后入栈的元素，会最先出栈。
+			*/
+
+			//栈结构常用的方法  添加  删除  是否为空 查看长度  查找元素  字符串方法(便于测试)
+			//创建一个栈类=》利用数组实现：数组添加，删除，比较耗性能 查找方便。或者是基于链表
+			function Stack() {
+				this.items = [];
+			}
+
+			//添加元素
+			Stack.prototype.add = function(el) {
+				this.items.push(el);
+			}
+
+			//删除元素
+			Stack.prototype.remove = function() {
+				return this.items.pop()
+			}
+
+			//查找元素=>查看栈顶元素
+			Stack.prototype.lookup = function() {
+				return this.items[this.items.length - 1];
+			}
+
+			//是否为空
+			Stack.prototype.isEmpty = function() {
+				return this.items.length == 0;
+			}
+
+			//查看长度
+			Stack.prototype.size = function() {
+				return this.items.length;
+			}
+
+			//字符串方法
+			Stack.prototype.toString = function() {
+				var str = '';
+				for (var index = 0; index < this.items.length; index++) {
+					str += this.items[index] + ' '
+				}
+				return str;
+			}
+
+			//测试
+			var s1 = new Stack();
+			s1.add(1);
+			s1.add(2);
+			s1.add(3);
+			s1.add(4);
+			s1.remove();
+			s1.size()
+			console.log(s1.toString(), s1.size(), s1.lookup(), s1.isEmpty())
+
+			//十进制转二进制 栈结构得应用
+			function decTobin(dec) {
+				//创建一个栈结构
+				var s2 = new Stack();
+				//返回的二进制数字
+				var binNum = '';
+				//循环取余数，取证
+				while (dec > 0) {
+					s2.add(dec % 2);
+					dec = Math.floor(dec / 2);
+				}
+				//依次出栈得到结果
+				while (!s2.isEmpty()) {
+					binNum += s2.remove();
+				}
+				//将结果转为数字返回
+				return Number(binNum);
+			}
+			console.log(decTobin(1000), 111111)
+
+
+			//直接用数组实现十进制转二进制
+			function dec2bin(dec) {
+				var binArr = [];
+				while (dec > 0) {
+					binArr.push(dec % 2);
+					dec = Math.floor(dec / 2);
+				}
+				return Number(binArr.reverse().join(''));
+			}
+			console.log(dec2bin(1000), 22222)
+		</script>
+	</body>
+</html>

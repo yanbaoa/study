@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>优先级队列</title>
+	</head>
+	<body>
+		<script>
+			//优先级队列实现
+			/*
+			    在插入一个元素的时候会考虑该数据的优先级
+			    比较完成后, 可以得出这个元素正确的队列中的位置. 其他处理方式, 和队列的处理方式一样.
+			    就是说, 如果我们要实现优先级队列, 最主要是要修改添加方法
+			*/
+			function PriorityQueue() {
+				//队列存储数组
+				this.items = [];
+				//封装一个新的构造函数, 用于保存元素和元素的优先级
+				function QueueElement(el, pr) {
+					this.el = el;
+					this.pr = pr;
+				}
+				//封装添加方法
+				PriorityQueue.prototype.add = function(el, pr) {
+					// 1.根据传入的元素, 创建新的QueueElement
+					var queueElement = new QueueElement(el, pr)
+					// 2.获取传入元素应该在正确的位置
+					if (this.isEmpty()) {
+						this.items.push(queueElement)
+					} else {
+						var added = false
+						for (var i = 0; i < this.items.length; i++) {
+							if (queueElement.pr < this.items[i].pr) {
+								this.items.splice(i, 0, queueElement)
+								added = true;
+								break;
+							}
+						}
+						// 遍历完所有的元素, 优先级都大于新插入的元素时, 就插入到最后
+						if (!added) {
+							this.items.push(queueElement)
+						}
+					}
+				}
+				//对列删除元素
+				PriorityQueue.prototype.remove = function() {
+					return this.items.shift();
+				}
+
+				//查看队列元素==>只能读取开头元素
+				PriorityQueue.prototype.lookup = function() {
+					return this.items[0];
+				}
+
+				//查看队列长度size
+				PriorityQueue.prototype.size = function() {
+					return this.items.length;
+				}
+
+				//判断是否为空
+				PriorityQueue.prototype.isEmpty = function() {
+					return this.items.length == 0;
+				}
+
+				//字符串方法
+				PriorityQueue.prototype.toString = function() {
+					var str = '';
+					for (var i = 0; i < this.items.length; i++) {
+						str += this.items[i].el + '-' + this.items[i].pr + '';
+					}
+					return str;
+				}
+			}
+
+			// 创建优先级队列对象
+			var pQueue = new PriorityQueue()
+
+			// 添加元素
+			pQueue.add("abc", 10)
+			pQueue.add("cba", 5)
+			pQueue.add("nba", 12)
+			pQueue.add("mba", 3)
+			console.log(pQueue.toString())
+		</script>
+	</body>
+</html>

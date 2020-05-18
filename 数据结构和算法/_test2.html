@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>普通对列封装</title>
+</head>
+<body>
+    <script>
+        /*
+            队列上，就是首先加入队列的，将会首先从队列移出。因此计算机科学家都用缩写“FIFO”（first in, firstout）先进先出，来形容它。
+            与栈类似，队列也有3个限制（但内容不同）。
+            •只能在末尾插入数据（这跟栈一样）。
+            •只能读取开头的数据（这跟栈相反）。
+            •只能移除开头的数据（这也跟栈相反）。
+        */
+       //风装队列类 ==》基于数组或链表
+       function Queue(){
+           //队列存储
+           this.items=[]
+       }
+
+       //往队列面添加元素
+       Queue.prototype.add=function(el){
+            this.items.push(el);
+       }
+
+       //对列删除元素
+       Queue.prototype.remove=function(){
+           return this.items.shift();
+       }
+
+       //查看队列元素==>只能读取开头元素
+       Queue.prototype.lookup=function(){
+           return this.items[0];
+       }
+
+       //查看队列长度size
+       Queue.prototype.size=function(){
+           return this.items.length;
+       }
+
+       //判断是否为空
+       Queue.prototype.isEmpty=function(){
+           return this.items.length==0;
+       }
+
+       //字符串方法
+       Queue.prototype.toString=function(){
+           var str='';
+           for(var i=0;i<this.items.length;i++){
+               str+=this.items[i]+' ';
+           }
+           return str;
+       }
+
+       //测试
+       var s3=new Queue();
+       s3.add('abc')
+       s3.add('cbc')
+       s3.add('dbc')
+       s3.add('fbc')
+    
+       s3.remove();
+       console.log(s3.toString(),s3.size(),s3.lookup(),s3.isEmpty())  
+       
+       //利用对列实现击鼓传花
+       function passGame(nameList,num){
+           //创建一个对列
+           var s4=new Queue();
+           //将人依次加入队列
+           for (var i = 0; i < nameList.length; i++) {
+                s4.add(nameList[i]) 
+           }
+           while(s4.size()>1){
+               //当人数大于1的时候一直循，
+               for (var index = 0; index < num-1; index++) {
+                    //并把不该淘汰的人再依次加入队列
+                    s4.add(s4.remove())  
+               }
+               //将该淘汰的淘汰
+               s4.remove()
+           }
+           return s4.lookup() + nameList.indexOf(s4.lookup())
+       }
+       var nameList=['liming','xiaohong','zhangya','niuniu','liangliang']
+       console.log(passGame(nameList,3))
+    </script>
+</body>
+</html>
