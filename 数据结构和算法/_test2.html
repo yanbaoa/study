@@ -73,12 +73,12 @@
                 s4.add(nameList[i]) 
            }
            while(s4.size()>1){
-               //当人数大于1的时候一直循，
+               //当人数大于1的时候一直循环，
                for (var index = 0; index < num-1; index++) {
                     //并把不该淘汰的人再依次加入队列
                     s4.add(s4.remove())  
                }
-               //将该淘汰的淘汰
+               //将该淘汰的淘汰  循环到最后剩下的正好是应该淘汰的元素
                s4.remove()
            }
            return s4.lookup() + nameList.indexOf(s4.lookup())

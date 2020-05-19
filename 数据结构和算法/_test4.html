@@ -36,10 +36,9 @@
                 this.data=data;
                 //指向下一个元素的指针，默认为null;
                 this.next=null;
-                //定义链表长度
-                this.length=0;
             }
-
+            //定义链表长度
+            this.length=0;
             //链表必须有一个head,head指向第一个元素，如果链表为空，则head为null;
             this.head=null;
             
@@ -118,6 +117,102 @@
                 this.length++
                 return true//插入成功
             }
+
+            //get 方法
+            linkedList.prototype.getData=function(po){
+                //判断边界
+                if(po<0 || po>=this.length) return null;
+                //定义变量，促进循环 同上
+                var cuerrent=this.head;
+                var index=0;
+                while(index++ < po){
+                    cuerrent=cuerrent.next;
+                    console.log(index,cuerrent.data)
+                }
+                //返回找到的数据
+                //console.log(cuerrent)
+                return cuerrent.data;
+            }
+
+            //indexOf 方法  查找数据在链表中的位置，没有返回-1
+            linkedList.prototype.indexOf=function(data){
+                 //定义变量，促进循环 同上
+                var cuerrent=this.head;
+                var index=0;
+                while(cuerrent){
+                    //如果相等，返回下标值
+                    if(cuerrent.data==data){
+                        return index;    
+                    }
+                    //促进循环
+                    index ++;
+                    cuerrent=cuerrent.next
+                }
+                //没有返回 -1
+                return -1;
+            }
+
+            //update 方法 更新数据
+            linkedList.prototype.update=function(po,newData){
+                //判断边界
+                if(po<0 || po>=this.length) return false;
+                //定义变量，促进循环 同上
+                var cuerrent=this.head;
+                var index=0;
+                while(index++ < po){
+                    cuerrent=cuerrent.next;
+                    //console.log(index,cuerrent.data)
+                }
+                //找到数据并修改
+                //console.log(cuerrent)
+                cuerrent.data=newData;
+                return true;
+            }
+
+            //根据位置删除节点
+            linkedList.prototype.removeAt=function(po){
+                //判断是否越界，越界返回null,表示什么也没有删除
+                //保存当前
+                var cuerrent =this.head;
+                if(po<0 || po>=this.length) return null;
+                //做判断1，删除的位置是否是第一个，(下标为0)
+                if(po==0){
+                    //将头直接指向原来的第二个
+                    this.head=this.head.next;
+                }else{
+                    //到这里表示不是第一个 
+                    //保存前一个
+                    var previous =null;
+                    //定义下标
+                    var index=0;
+                    while(index++ <po){
+                        previous=cuerrent;
+                        //促进循环
+                        cuerrent=cuerrent.next;
+                    }
+                    previous.next=cuerrent.next;
+                }
+                // 4.length-1
+                this.length--;
+                // 5.返回移除的数据
+                return cuerrent.data;
+            }
+
+            //remove 方法 根据元素删除节点
+            linkedList.prototype.remove=function(data){
+                //调用之前的方法实现
+                return this.removeAt(this.indexOf(data))
+            }
+
+            //isEmpty 是否为空
+            linkedList.prototype.isEmpty=function(){
+                return this.length==0;
+            }
+
+            //size方法 获取长度
+            linkedList.prototype.size=function(){
+                return this.length;
+            }
         }
 
         var s5=new linkedList();
@@ -125,9 +220,13 @@
         s5.append("456")
         s5.append("789")
         s5.insert(0, 100)
-        s5.insert(4, 2)
+        s5.insert(3, 2)
         s5.insert(2, 0)
-        console.log(s5.toString(),1414124)
+        console.log(s5.getData(2),1414124)
+        console.log(s5.indexOf(1000),111111)
+        s5.update(0,1000)
+        s5.remove(1000)
+        console.log(s5.toString(),s5.size())
     </script>
 </body>
 </html>
