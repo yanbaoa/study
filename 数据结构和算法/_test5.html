@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>双向链表的封装</title>
+</head>
+<body>
+    <script>
+        /*
+            双向链表
+            既可以从头遍历到尾, 又可以从尾遍历到头
+            一个节点既有向前连接的引用, 也有一个向后连接的引用.
+            双向链表可以有效的解决单向链表中提到的问题
+            双向链表有什么缺点
+            每次在插入或删除某个节点时, 需要处理四个节点的引用, 而不是两个. 也就是实现起来要困难一些
+            并且相当于单向链表, 必然占用内存空间更大一些.
+            但是这些缺点和我们使用起来的方便程度相比, 是微不足道的.
+        */
+
+        //封装双向链表类
+        function DoublyLinkedList(){
+            //封装一个内部类 用来存储元素
+            function Node(data){
+                //数据
+                this.data=data;
+                //前一个指向
+                this.prev=null;
+                //下一个指向
+                this.next=null;
+            }
+            //链表长度
+            this.length=0;
+            //链表的头部
+            this.head=null;
+            //链表尾部
+            this.tail=null;
+
+            //以下为新添加的方法
+            //append 方法 项链表中追加一个元素
+            DoublyLinkedList.prototype.append=function(data){
+                //实例化类
+                var newNode = new Node(data);
+                //做判断看看是否是第一个元素
+                if(this.head==null){
+                    //将头部指向第一个
+                    this.head=newNode;
+                    //最后一个指向头部(是第一个也是最后一个)
+                    this.tail=newNode;
+                }else{
+                    //将最后一个指向新节点
+                    this.tail.next = newNode;
+                    //新节点的前一个指向前一个(也就是原来的最后一个)
+                    newNode.prev = this.tail;
+                    //将新节点变成最后一个
+                    this.tail = newNode
+                }
+                //追加后改变长度
+                this.length++
+            }
+
+            //toString
+            DoublyLinkedList.prototype.toString=function(){
+                //调用正向方法实现
+                return this.forwardString();
+            }
+
+            // 正向遍历的方法
+            DoublyLinkedList.prototype.forwardString=function(){
+                //声明变量促进循环
+                var curent = this.head;
+                //声明返回的字符串
+                var resultString = '';
+                //循环 遍历 拼接
+                while(curent){
+                    resultString += curent.data + " "
+                    curent=curent.next;
+                }
+                //返回拼好的字符串
+                return resultString;
+            }
+
+            // 插入方法的实现
+            DoublyLinkedList.prototype.insert=function(po,data){
+                //判断边界
+                if(po<0 || po>this.length) return false;
+                //创建节点
+                var newNode = new Node(data);
+                //判断是否是第一个
+                if(po==0){
+                    if(this.isEmpty()){
+                        this.head=newNode;
+                        this.tail=newNode;
+                    }else{
+                        //将原来第一个的前一个指向新节点
+                        this.head.prev=newNode;
+                        //将新节点的下一个指向原来的第一个
+                        newNode.next=this.head;
+                        //把head的指向改变成newNode
+                        this.head=newNode;
+                    }
+                }else if(po == this.length){
+                    //如果位置等于链表的长度 则跟追加到最后一样
+                    //将最后一个指向新节点
+                    this.tail.next = newNode;
+                    //新节点的前一个指向前一个(也就是原来的最后一个)
+                    newNode.prev = this.tail;
+                    //将新节点变成最后一个
+                    this.tail = newNode
+                }else{
+                    //进到这表示插入到中间 需要进行循环 找到正确的位置进行插入
+                    var current = this.head;
+                    var index = 0;
+                    //保存前一个节点
+                    var previous = null
+                    //循环
+                    while(index++ <po){
+                        previous = current
+                        current = current.next
+                    }
+                    // 交换节点的指向顺序
+                    //将新节点的下一个指向原来的节点
+                    newNode.next = current
+                    //将新节点的前一个指向原来来节点的前一个
+                    newNode.prev = previous
+                    //将原来节点的前一个指向新节点
+                    current.prev = newNode
+                    //将前一个的下一个指向新节点
+                    previous.next = newNode
+                }
+                // 4.length+1
+                this.length++
+                return true
+            }
+
+            // 反向遍历的方法
+            DoublyLinkedList.prototype.reverseString=function(){
+                //声明变量促进循环
+                var curent = this.tail;
+                //声明返回的字符串
+                var resultString = '';
+                //循环 遍历 拼接
+                while(curent){
+                    resultString += curent.data + " ";
+                    curent=curent.prev;
+                }
+                //返回拼好的字符串
+                return resultString;
+            }
+
+            //是否为空方法
+            DoublyLinkedList.prototype.isEmpty=function(){
+                return this.length==0;
+            }
+
+            //size方法
+            DoublyLinkedList.prototype.size=function(){
+                return this.length;
+            }
+        }
+        // 1.创建双向链表对象
+        var list = new DoublyLinkedList()
+
+        // 2.追加元素
+        list.append("abc")
+        list.append("cba")
+        list.append("nba")
+        list.append("mba")
+
+        // 3.获取所有的遍历结果
+        alert(list.forwardString()) // abc,cba,nba,mba
+        alert(list.reverseString()) // mba,nba,cba,abc
+        alert(list) // abc,cba,nba,mba
+
+        // 4.insert方法测试
+        list.insert(0, "100")
+        list.insert(2, "200")
+        list.insert(6, "300")
+        alert(list) // 100,abc,200,cba,nba,mba,300
+    </script>
+</body>
+</html>

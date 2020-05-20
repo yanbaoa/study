@@ -7,3 +7,6 @@ http://caibaojian.com/c/front    ----前端日报
 https://xv700.gitee.io/message-communication-for-web/#introduce  ---多页面通信
 
 https://www.jianshu.com/u/02cd0bc8c45e   简书学习路径
+
+https://segmentfault.com/a/1190000016337325 ---js原生复习
+https://segmentfault.com/a/1190000006700115----js 思维导图
