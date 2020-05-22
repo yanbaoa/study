@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>object2 </title>
+</head>
+<body>
+    <script>
+        //defineProperty Object.defineProperty(object, prop, descriptor)定义对象
+        var obj={};
+        //添加一个属性
+        Object.defineProperty(obj,'foo',{
+            value:123,
+            writable:true,
+            enumerable:true,
+            configurable:true
+        })
+        console.log(obj);
+
+        //修改数据属性
+        Object.defineProperty(obj,'foo',{
+            writable:true //不能写
+        })
+        obj.foo="456"
+        console.log(obj)//123
+
+        Object.defineProperty(obj,'foo',{
+            set:function(x){
+                //this.foo=x;
+                console.log('set__')
+            },
+            get:function(){
+                console.log('get__')
+                //return this.foo;
+            },
+            enumerable:true,
+            configurable:true
+        })
+
+        
+    </script>
+</body>
+</html>

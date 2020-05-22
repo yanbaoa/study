@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>集合的封装</title>
+</head>
+<body>
+    <script>
+        /*
+            集合通常是由一组无序的, 不能重复的元素构成.
+            没有顺序意味着不能通过下标值进行访问, 不能重复意味着相同的对象在集合中只会存在一份
+        */
+        //集合类
+        function Set(){
+            //封装一个内部类
+            this.items={};
+
+            //集合的方法
+
+            //添加方法
+            Set.prototype.add=function(value){
+                //先判断一个集合中有没有这个属性
+                if(this.has(value)){
+                    return false
+                }
+                //对象赋值 keys 和 value 用一样的
+                this.items[value] = value;
+                return true;
+            }
+
+            //remove 方法 讲一个元素从集合中删除
+            Set.prototype.remove=function(value){
+                //先判断一个集合中有没有这个属性
+                if(!this.has(value)){
+                    return false;
+                }
+                //删除对象中的属性
+                delete this.items[value];
+                return true;
+            }
+
+            //has方法 判断一个元素是否存在于集合中
+            Set.prototype.has=function(value){
+                //js对象判断是否某个属性hasOwnProperty
+                return this.items.hasOwnProperty(value)
+            }
+
+            //clear 方法 清空集合
+            Set.prototype.clear=function(){
+                //将集合置空
+                this.items={};
+            }
+
+            //size 方法 返回集合的长度
+            Set.prototype.size=function(){
+                return Object.keys(this.items).length;
+                /*
+                    考虑兼容性问题, 使用下面的代码
+                    var count = 0
+                    for (var value in this.items) {
+                        if (this.items.hasOwnProperty(value)) {
+                            count++
+                        }
+                    }
+                    return count
+                */
+            }
+
+            //values返回一个包含集合中所有值的数组。
+            Set.prototype.values=function(){
+                //返回一个数组
+                return Object.keys(this.items)
+                /*
+                    考虑兼容性问题, 使用下面的代码
+                    var keys = []
+                    for (var value in this.items) {
+                        keys.push(value)
+                    }
+                    return keys
+                */
+            }
+        } 
+
+
+        // 测试和使用集合类
+        var set = new Set()
+
+        // 添加元素
+        set.add(1)
+        alert(set.values()) // 1
+        set.add(1)
+        alert(set.values()) // 1
+
+        set.add(100)
+        set.add(200)
+        alert(set.values()) // 1,100,200
+
+        // 判断是否包含元素
+        alert(set.has(100)) // true
+
+        // 删除元素
+        set.remove(100)
+        alert(set.values()) // 1, 200
+
+        // 获取集合的大小
+        alert(set.size()) // 2
+        set.clear()
+        alert(set.size()) // 0
+    </script>
+</body>
+</html>

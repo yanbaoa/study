@@ -132,6 +132,143 @@
                 this.length++
                 return true
             }
+            
+            //get 方法 获取链表中的数据
+            DoublyLinkedList.prototype.get=function(po){
+                //判断边界
+                if(po<0 || po>=this.length) return -1;
+                //定义中间变量
+                var pot = this.length/2;
+                if(po<=pot){
+                    //说明要找的元素位置在前半段，或者是正中间
+                    //声明变量进行循环
+                    var index = 0;
+                    //从前向后找，变量默认等于第一个
+                    var current =this.head;
+                    //循环
+                    while(index++ <po){
+                        current =current.next;
+                    }
+                    return current.data;
+                }else{
+                    //说明要找的元素位置在后半段，或者是正中间
+                    //声明变量进行循环
+                    var index = this.length-1;
+                    //从后向前找，变量默认等于最后一个
+                    var current =this.tail;
+                    //循环
+                    while(index-- >po){
+                        current =current.prev;
+                    }
+                    return current.data;
+                }   
+            }
+
+            //indexOf 方法 找到对应数据并返回位置
+            DoublyLinkedList.prototype.indexOf=function(data){
+                    //声明变量进行循环
+                    var index = 0;
+                    //从前向后找，变量默认等于第一个
+                    var current =this.head;
+                    //循环
+                    while(current){
+                        if(current.data==data){
+                            return index;
+                        }
+                        //促进循环
+                        index ++;
+                        current=current.next
+                    }
+                    return -1;      
+            }
+
+            //updata 方法 更新数据
+            DoublyLinkedList.prototype.update=function(po,data){
+                //判断边界
+                if(po<0 || po>=this.length) return -1;
+                //定义中间变量
+                var pot = this.length/2;
+                if(po<=pot){
+                    //说明要找的元素位置在前半段，或者是正中间
+                    //声明变量进行循环
+                    var index = 0;
+                    //从前向后找，变量默认等于第一个
+                    var current =this.head;
+                    //循环
+                    while(index++ <po){
+                        current =current.next;
+                    }
+                    current.data=data;
+                    return true;
+                }else{
+                    //说明要找的元素位置在后半段，或者是正中间
+                    //声明变量进行循环
+                    var index = this.length-1;
+                    //从后向前找，变量默认等于最后一个
+                    var current =this.tail;
+                    //循环
+                    while(index-- >po){
+                        current =current.prev;
+                    }
+                    current.data=data;
+                    return true;
+                }   
+            }
+
+            //removeAt 方法 根据指定下标删除元素
+            DoublyLinkedList.prototype.removeAt=function(po){
+                //判断边界，没有的元素肯定不能删除
+                if(po<0 || po>=this.length) return false;
+                //判断不同的情况进行删除
+                var curent = this.head;
+                if(po==0){
+                    //删除第一个元素
+                    //判断长度是否是一
+                    if(this.length==1){
+                        this.head = null
+                        this.tail = null
+                    }else{
+                        //将当前头部指向原来头部的下一个
+                        this.head=this.head.next;
+                        //第一个没有前一个元素，所以需要把prev变为null
+                        this.head.prev=null;
+                    }
+                }else if(po==this.length-1){
+                    //current 赋值为最后要删除的元素，当返回值用
+                    current = this.tail;
+                    //改变最后一个的指向
+                    this.tail = this.tail.prev;
+                    //最后一个没有下一个
+                    this.tail.next = null;
+                }else{
+                    //删除中间元素
+                    //保存前一个
+                    var previous = null;
+                    //下标值
+                    var index = 0;
+                    //循环
+                    while(index++ <po){
+                        //保存前一个
+                        previous = curent;
+                        //促进循环
+                        curent = curent.next;
+                    }
+                    //改变指向
+                    previous.next=curent.next;
+                    curent.next.prev=previous;
+                }
+                // length-1
+                this.length--
+                return current.element
+            }
+            
+            //remove方法 根据元素删除
+            // 根据元素删除
+            DoublyLinkedList.prototype.remove = function (data) {
+                //调用原来方法实现
+                var index = this.indexOf(data)
+                return this.removeAt(index)
+            }
 
             // 反向遍历的方法
             DoublyLinkedList.prototype.reverseString=function(){
@@ -157,6 +294,16 @@
             DoublyLinkedList.prototype.size=function(){
                 return this.length;
             }
+
+            // 获取第一个元素
+            DoublyLinkedList.prototype.getHead = function () {
+                return this.head.data
+            }
+
+            // 获取最后一个元素
+            DoublyLinkedList.prototype.getTail = function () {
+                return this.tail.data
+            }
         }
         // 1.创建双向链表对象
         var list = new DoublyLinkedList()
@@ -168,15 +315,17 @@
         list.append("mba")
 
         // 3.获取所有的遍历结果
-        alert(list.forwardString()) // abc,cba,nba,mba
-        alert(list.reverseString()) // mba,nba,cba,abc
-        alert(list) // abc,cba,nba,mba
-
+        //alert(list.forwardString()) // abc,cba,nba,mba
+        //alert(list.reverseString()) // mba,nba,cba,abc
+        //alert(list) // abc,cba,nba,mba
         // 4.insert方法测试
         list.insert(0, "100")
         list.insert(2, "200")
         list.insert(6, "300")
-        alert(list) // 100,abc,200,cba,nba,mba,300
+        list.update(1,10000000)
+        list.remove(100)
+        //alert(list) // 100,abc,200,cba,nba,mba,300
+        console.log(list.indexOf('abc'),list.toString())
     </script>
 </body>
 </html>

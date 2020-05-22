@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>object3 defineProperties</title>
+</head>
+<body>
+    <script>
+        var obj = {};
+        //可以定义一系列属性值
+        Object.defineProperties(obj, {
+        'property1': {
+            value: true,
+            writable: true
+        },
+        'property2': {
+            value: 'Hello',
+            writable: false
+        }
+        // etc. etc.
+        });
+        console.log(obj,1234444)
+    </script>
+</body>
+</html>

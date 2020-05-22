@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>js object1 Object.create</title>
+</head>
+<body>
+    <script>
+        //Object.create 创建一个对象
+        const obj = Object.create({a:1}, {b: {value: 2}})
+        //第一个参数为对象，对象为函数调用之后返回新对象的原型对象，第二个参数为对象本身的实例方法（默认不能修改,不能枚举）
+        obj.__proto__.a === 1      // true 添加到原形上的属性
+        obj.b = 3;
+        console.log(obj.b) // 对象本身实例默认不能枚举
+
+        //创建一个可写的,可枚举的,可配置的属性p
+        obj2 = Object.create({}, {
+            p: {
+                value: 2,       //属性值
+                writable: true,     //是否可以重写值
+                enumerable: true,   //是否可枚举
+                configurable: true  //是否可以修改以上几项配置
+            }
+        });  
+        obj2.p = 3;
+        console.log(obj2.p)     // 3 
+        //注意： enumerable 会影响以下
+        //for…in  遍历包括对象原型上属性
+        //Object.keys()   只能遍历自身属性
+        //JSON.stringify  只能序列化自身属性
+        //defineProperty Object.defineProperty(object, prop, descriptor)定义对象属性
+    </script>
+</body>
+</html>
