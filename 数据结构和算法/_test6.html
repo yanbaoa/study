@@ -80,33 +80,108 @@
                     return keys
                 */
             }
+			
+			//Union 方法 求集合之间的并集 就是两个集合的元素都包括 
+			Set.prototype.Union=function(aggregateB){
+				//创建一个空集合用来存储并集
+				var aggregateA = new Set();
+				//循环分别把两个集合的元素放入新集合
+				var valuesA = this.values();
+				for (var i = 0; i < valuesA.length; i++) {
+					aggregateA.add(valuesA[i]);
+				}
+				
+				var valuesB = aggregateB.values();
+				for (var i = 0; i < valuesB.length; i++) {
+					aggregateA.add(valuesB[i]);
+				}
+				//返回新集合
+				return aggregateA;
+			}
+			
+			//interSection 方法 求集合的交集
+			Set.prototype.interSection = function(aggregateB){
+				//先创建一个空集合用来存放交集
+				var interSet = new Set();
+				//获取本集合的所有元素
+				var values = this.values();
+				//进行循环变并判断这些元素是否在aggregateB 中,是就把它添加到新元素中
+				for (var i = 0; i < values.length; i++) {
+					if(aggregateB.has(values[i])){
+						interSet.add(values[i])
+					}
+				}
+				//返回新集合
+				return interSet;
+			}
+			
+			//Difference 方法 用来求集合的差集
+			Set.prototype.Difference = function(aggregateB){
+				//首先创建一个空集合用来存放两个集合之间的差集
+				var DifferenceSet = new Set();
+				//去除本集合中所有的keys
+				var values = this.values();
+				//循环遍历 如果本集合中的元素aggregateB中没有则追加到DifferenceSet中
+				for (var i = 0; i < values.length; i++) {
+					if(!aggregateB.has(values[i])){
+						DifferenceSet.add(values[i])
+					}
+				}
+				//返回新集合
+				return DifferenceSet;
+			}
+			
+			//求是否是子集
+			Set.prototype.subSet = function(aggregateB){
+				//创建一个新集合用来存储新集合
+				//subSets = new Set();
+				//获取本集合的所有元素
+				var values = this.values();
+				//循环看看本集合的中的元素是否都在aggregateB中,是则返回true,代表本集合是aggregateB子集,否则返回false
+				for (var i = 0; i < values.length; i++) {
+					if(!aggregateB.has(values[i])){
+						return false;
+					}
+				}
+				return true;
+			}
         } 
 
 
-        // 测试和使用集合类
-        var set = new Set()
+//         // 测试和使用集合类
+//         var set = new Set()
+// 
+//         // 添加元素
+//         set.add(1)
+//         alert(set.values()) // 1
+//         set.add(1)
+//         alert(set.values()) // 1
+// 
+//         set.add(100)
+//         set.add(200)
+//         alert(set.values()) // 1,100,200
+// 
+//         // 判断是否包含元素
+//         alert(set.has(100)) // true
+// 
+//         // 删除元素
+//         set.remove(100)
+//         alert(set.values()) // 1, 200
+// 
+//         // 获取集合的大小
+//         alert(set.size()) // 2
+//         set.clear()
+//         alert(set.size()) // 0
 
-        // 添加元素
-        set.add(1)
-        alert(set.values()) // 1
-        set.add(1)
-        alert(set.values()) // 1
-
-        set.add(100)
-        set.add(200)
-        alert(set.values()) // 1,100,200
-
-        // 判断是否包含元素
-        alert(set.has(100)) // true
-
-        // 删除元素
-        set.remove(100)
-        alert(set.values()) // 1, 200
-
-        // 获取集合的大小
-        alert(set.size()) // 2
-        set.clear()
-        alert(set.size()) // 0
+          var setA = new Set();
+		  setA.add(123)
+		  setA.add('aaa')
+		  var setB = new Set();
+		  setB.add('aaa')
+		  setB.add('bbb')
+		  setB.add(123)
+		  var subSets = setA.subSet(setB);
+		  alert(subSets)
     </script>
 </body>
 </html>
