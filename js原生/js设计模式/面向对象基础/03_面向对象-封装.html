@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>面向对象-封装</title>
+	</head>
+	<body>
+		<script>
+			// 1 封装数据
+			var myObject = (function() {
+				var __name = 'sven'; // 私有（private）变量
+				return {
+					getName: function() { // 公开（public）方法
+						return __name;
+					}
+				}
+			})();
+			console.log(myObject.getName()); // 输出：sven 
+			console.log(myObject.__name) // 输出：undefined
+			
+			//2 封装实现
+			/* 当我们修改一个对象时，可以随意地修改它的
+			内部实现，只要对外的接口没有变化，就不会影响到程序的其他功能。 */
+			
+			//3 封装类型
+			/* 对于 JavaScript 的设计模式实
+			现来说，不区分类型是一种失色，也可以说是一种解脱。在后面章节的学习中，我们可以慢慢了
+			解这一点。 */
+			
+			
+		</script>
+	</body>
+</html>
